@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lissajous Figure Plotter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    canvas {
+      border: 1px solid #000;
+      margin-top: 20px;
+    }
+    label, input {
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lissajous Figure Plotter</h1>
+  <div>
+    <label for="a">Frequency A:</label>
+    <input type="number" id="a" value="3">
+    <label for="b">Frequency B:</label>
+    <input type="number" id="b" value="2">
+    <label for="delta">Phase Difference (delta, in radians):</label>
+    <input type="number" step="0.1" id="delta" value="0">
+    <button onclick="drawLissajous()">Plot</button>
+  </div>
+  <canvas id="canvas" width="500" height="500"></canvas>
+
+  <script>
+    function drawLissajous() {
+      const a = parseFloat(document.getElementById('a').value);
+      const b = parseFloat(document.getElementById('b').value);
+      const delta = parseFloat(document.getElementById('delta').value);
+
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const width = canvas.width;
+      const height = canvas.height;
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const scale = 200;
+      const steps = 1000;
+
+      ctx.beginPath();
+      for (let i = 0; i <= steps; i++) {
+        const t = (Math.PI * 2 * i) / steps;
+        const x = centerX + scale * Math.sin(a * t + delta);
+        const y = centerY + scale * Math.sin(b * t);
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+      ctx.stroke();
+    }
+
+    drawLissajous();
+  </script>
+</body>
+</html>
